@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Лісова галявина</title>
+
+<style>
+:root {
+    --green: #245b3c;
+    --light-green: #e8f5df;
+    --orange: #f4b544;
+    --text: #263d2c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: var(--text);
+    background: linear-gradient(135deg, #edf8e7, #dcefe4);
+}
+
+header {
+    text-align: center;
+    padding: 28px 15px 18px;
+}
+
+h1 {
+    margin: 0;
+    color: var(--green);
+    font-size: clamp(28px, 4vw, 42px);
+}
+
+header p {
+    color: #627668;
+}
+
+.app {
+    max-width: 1250px;
+    margin: auto;
+    padding: 15px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: #fffdf7;
+    border: 1px solid #d6e8cf;
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 10px 28px #245b3c16;
+}
+
+h2 {
+    color: var(--green);
+    font-size: 21px;
+}
+
+.description {
+    color: #6d7e70;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.animal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.animal-card {
+    border: 2px solid #e0eadb;
+    border-radius: 15px;
+    padding: 8px;
+    background: white;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.animal-card:hover {
+    transform: translateY(-3px);
+    border-color: #83bb70;
+}
+
+.animal-card.selected {
+    border-color: var(--orange);
+    background: #fff5d9;
+}
+
+.animal-card img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.animal-card strong {
+    display: block;
+    margin-top: 7px;
+}
+
+button {
+    font: inherit;
+}
+
+.btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.btn:hover {
+    filter: brightness(.95);
+}
+
+.primary {
+    background: var(--green);
+    color: white;
+}
+
+.secondary {
+    background: #e7f1e0;
+    color: var(--green);
+}
+
+.danger {
+    background: #fff0ee;
+    color: #b53531;
+}
+
+.sidebar-actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.tip {
+    margin-top: 15px;
+    background: var(--light-green);
+    border-radius: 13px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.main-column {
+    display: grid;
+    gap: 20px;
+}
+
+.meadow-panel {
+    padding: 16px;
+}
+
+.meadow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.counter {
+    background: var(--light-green);
+    color: var(--green);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#meadow {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    height: 440px;
+    border: 4px solid #5a9d58;
+    border-radius: 20px;
+    background: linear-gradient(
+        to bottom,
+        #bde8ff 0%,
+        #e0f6ff 32%,
+        #a8dc83 32%,
+        #75c45e 56%,
+        #58ae4b 100%
+    );
+}
+
+#meadow::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: -60px;
+    left: -10%;
+    width: 120%;
+    height: 160px;
+    border-radius: 50%;
+    background: #4d9e43;
+}
+
+.sun {
+    position: absolute;
+    top: 35px;
+    right: 55px;
+    width: 60px;
+    height: 60px;
+    background: #ffdf69;
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px #ffdf6944;
+}
+
+.cloud {
+    position: absolute;
+    top: 55px;
+    left: 65px;
+    font-size: 45px;
+}
+
+.tree {
+    position: absolute;
+    z-index: -1;
+    bottom: 20%;
+    font-size: 65px;
+}
+
+.tree-left {
+    left: 5px;
+}
+
+.tree-right {
+    right: 5px;
+}
+
+.meadow-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 8px 11px;
+    background: #ffffffdf;
+    border-radius: 10px;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.flower {
+    position: absolute;
+    z-index: -1;
+    bottom: 10px;
+    font-size: 23px;
+}
+
+.placed-animal {
+    position: absolute;
+    z-index: 3;
+    width: 112px;
+    padding: 5px;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 13px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.placed-animal.active {
+    background: #fff8d6bd;
+    border-color: var(--orange);
+}
+
+.placed-animal img {
+    display: block;
+    width: 100%;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.placed-name {
+    display: block;
+    margin-top: 4px;
+    padding: 4px;
+    background: #fffdf0ed;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.delete-button {
+    margin-top: 4px;
+    padding: 5px 7px;
+    border: 0;
+    border-radius: 7px;
+    background: #fff0ee;
+    color: #b53531;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.quiz-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.quiz-icon {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    background: #fff0c8;
+    border-radius: 14px;
+    font-size: 22px;
+}
+
+.quiz-header h2 {
+    margin: 0;
+}
+
+.quiz-header p {
+    color: #6d7e70;
+    font-size: 13px;
+}
+
+.progress {
+    height: 8px;
+    background: #e8efe4;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+#progressBar {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #72bd62, #e9b74c);
+    transition: width .2s;
+}
+
+#question {
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: bold;
+    color: var(--green);
+    min-height: 55px;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.answer {
+    padding: 13px;
+    min-height: 52px;
+    border: 2px solid #e0eadb;
+    border-radius: 12px;
+    background: white;
+    text-align: left;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.answer:hover {
+    border-color: #83bb70;
+}
+
+.answer.correct {
+    background: #e1f7e3;
+    border-color: #3d9b59;
+    color: #246b37;
+}
+
+.answer.wrong {
+    background: #fff0ee;
+    border-color: #df7770;
+    color: #a43d38;
+}
+
+.answer:disabled {
+    cursor: default;
+}
+
+#feedback {
+    min-height: 28px;
+    margin-top: 13px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.good {
+    color: #267641;
+}
+
+.bad {
+    color: #a43d38;
+}
+
+.quiz-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+#questionNumber {
+    color: #6d7e70;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.note {
+    background: #ffffffbb;
+    border-radius: 13px;
+    padding: 14px;
+    color: #6d7e70;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media (max-width: 850px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .animal-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 580px) {
+    .app {
+        padding: 10px;
+    }
+
+    .panel {
+        padding: 13px;
+    }
+
+    .animal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #meadow {
+        height: 380px;
+    }
+
+    .placed-animal {
+        width: 92px;
+    }
+
+    .placed-animal img {
+        height: 65px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    #question {
+        font-size: 19px;
+    }
+}
+
+/* Додано: автор гри у правому верхньому кутку */
+.author-credit {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    color: #627668;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 1000;
+    background: #ffffffcc;
+    padding: 6px 9px;
+    border-radius: 8px;
+}
+
+@media (max-width: 580px) {
+    .author-credit {
+        top: 8px;
+        right: 10px;
+        font-size: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Додано: підпис автора -->
+<div class="author-credit">Автор гри: КАШЛЮК ОЛЬГА</div>
+
+<header>
+    <h1> Лісова галявина </h1>
+    <p>Обирай тваринок, відповідай на запитання та облаштовуй галявину!</p>
+</header>
+
+<main class="app">
+    <div class="layout">
+
+        <aside class="panel">
+            <h2> Обери тваринку</h2>
+
+            <p class="description">
+                Натисни на фотографію, щоб почати вікторину,
+                або перетягни тваринку на галявину.
+            </p>
+
+            <div class="animal-grid" id="animalList"></div>
+
+            <div class="tip">
+                <strong> Для вихователя</strong><br>
+                Запропонуй дитині назвати тваринку, описати її
+                колір, місце проживання та їжу.
+            </div>
+
+            <div class="sidebar-actions">
+                <button class="btn secondary" id="randomAnimal">
+                     Випадкова тваринка
+                </button>
+
+                <button class="btn secondary" id="clearMeadow">
+                    ↺ Очистити галявину
+                </button>
+            </div>
+        </aside>
+
+        <section class="main-column">
+
+            <div class="panel meadow-panel">
+                <div class="meadow-header">
+                    <h2> Моя галявина</h2>
+                    <span class="counter" id="animalCounter">
+                        Тваринок: 0
+                    </span>
+                </div>
+
+                <div id="meadow">
+                    <div class="sun"></div>
+                    <div class="cloud">☁</div>
+
+                    <div class="tree tree-left"></div>
+                    <div class="tree tree-right"></div>
+
+                    <div class="meadow-label">
+                         Перетягни тваринку сюди
+                    </div>
+
+                    <div class="flower" style="left:15%"></div>
+                    <div class="flower" style="left:35%"></div>
+                    <div class="flower" style="left:60%"></div>
+                    <div class="flower" style="right:15%"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="quiz-header">
+                    <div class="quiz-icon"></div>
+
+                    <div>
+                        <h2>Вікторина для малечі</h2>
+                        <p>Обери одну правильну відповідь.</p>
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div id="progressBar"></div>
+                </div>
+
+                <div id="question">
+                    Спочатку обери тваринку!
+                </div>
+
+                <div class="answers" id="answers"></div>
+
+                <div id="feedback">
+                    Тут з'явиться результат відповіді.
+                </div>
+
+                <div class="quiz-footer">
+                    <span id="questionNumber">Питання 0 із 5</span>
+
+                    <button class="btn primary" id="nextQuestion">
+                        Наступне питання →
+                    </button>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>Як грати:</strong> обери тваринку, прочитай
+                дитині питання та запропонуй чотири варіанти відповіді.
+                Тваринок на галявині можна переміщувати й видаляти.
+            </div>
+
+        </section>
+    </div>
+</main>
+
+<script>
+
+
+const animalData = [
+    {
+        id: "rabbit",
+        name: "Зайчик",
+        kind: "Лісовий мешканець",
+        image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=500&q=85",
+        questions: [
+            {
+                text: "Хто зображений на фотографії?",
+                answers: ["Зайчик", "Лисичка", "Ведмідь", "Їжачок"],
+                correct: 0,
+                explain: "Правильно! Це зайчик."
+            },
+            {
+                text: "Якого кольору може бути зайчик?",
+                answers: ["Синього", "Сірого або білого", "Фіолетового", "Зеленого"],
+                correct: 1,
+                explain: "Так! Зайчики можуть мати сіре, біле або коричнювате хутро."
+            },
+            {
+                text: "Де може жити зайчик?",
+                answers: ["У морі", "На даху", "Серед трави та кущів", "В акваріумі"],
+                correct: 2,
+                explain: "Чудово! Зайці живуть у природі та ховаються серед рослин."
+            },
+            {
+                text: "Що може їсти зайчик?",
+                answers: ["Каміння", "Траву та листя", "Метал", "Пластик"],
+                correct: 1,
+                explain: "Правильно! Зайці їдять траву, листя та пагони."
+            },
+            {
+                text: "Які вуха має зайчик?",
+                answers: ["Довгі", "Як у риби", "Зовсім не має", "Одне маленьке"],
+                correct: 0,
+                explain: "Так! Зайчик має довгі вуха, які допомагають добре чути."
+            }
+        ]
+    },
+
+    {
+        id: "fox",
+        name: "Лисичка",
+        kind: "Мешканка лісу",
+        image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=500&q=85",
+        questions: [
+            {
+                text: "Хто зображений на фотографії?",
+                answers: ["Їжачок", "Зайчик", "Лисичка", "Ведмідь"],
+                correct: 2,
+                explain: "Правильно! Це лисичка."
+            },
+            {
+                text: "Якого кольору найчастіше буває лисиця?",
+                answers: ["Рудого", "Блакитного", "Рожевого", "Зеленого"],
+                correct: 0,
+                explain: "Так! Багато лисиць мають руде хутро."
+            },
+            {
+                text: "Як називається житло лисиці?",
+                answers: ["Гніздо", "Нора", "Акваріум", "Вулик"],
+                correct: 1,
+                explain: "Правильно! Лисиця може жити в норі."
+            },
+            {
+                text: "Що може їсти лисиця?",
+                answers: ["Лише цукерки", "Папір", "Дрібних тварин", "Каміння"],
+                correct: 2,
+                explain: "Так! Лисиця полює на дрібних тварин і їсть іншу доступну їжу."
+            },
+            {
+                text: "Який хвіст у лисички?",
+                answers: ["Довгий і пухнастий", "Хвоста немає", "Як у риби", "Квадратний"],
+                correct: 0,
+                explain: "Чудово! У лисиці довгий пухнастий хвіст."
+            }
+        ]
+    },
+
+    {
+        id: "bear",
+        name: "Ведмедик",
+        kind: "Великий лісовий звір",
+        image: "https://i.pinimg.com/736x/48/4a/61/484a61044c596f0f66f9bb54a63a2232.jpg",
+        questions: [
+            {
+                text: "Хто зображений на фотографії?",
+                answers: ["Лисичка", "Ведмідь", "Зайчик", "Їжачок"],
+                correct: 1,
+                explain: "Так! Це ведмідь."
+            },
+            {
+                text: "Якого кольору може бути ведмідь?",
+                answers: ["Зеленого", "Рожевого", "Коричневого", "Блакитного"],
+                correct: 2,
+                explain: "Правильно! Багато ведмедів мають коричневе хутро."
+            },
+            {
+                text: "Як називається місце, де ведмідь може зимувати?",
+                answers: ["Барліг", "Вулик", "Акваріум", "Гніздо лелеки"],
+                correct: 0,
+                explain: "Так! Місце зимового відпочинку ведмедя називають барлогом."
+            },
+            {
+                text: "Що може їсти ведмідь?",
+                answers: ["Лише морозиво", "Ягоди, рослини та тваринну їжу", "Пластик", "Тільки каміння"],
+                correct: 1,
+                explain: "Правильно! Ведмідь всеїдний і їсть різноманітну їжу."
+            },
+            {
+                text: "Який ведмідь за розміром?",
+                answers: ["Зазвичай великий", "Менший за мураху", "Як метелик", "Невидимий"],
+                correct: 0,
+                explain: "Чудово! Ведмідь — великий і сильний звір."
+            }
+        ]
+    },
+
+    {
+        id: "hedgehog",
+        name: "Їжачок",
+        kind: "Маленький колючий звір",
+        image: "https://i.pinimg.com/736x/fe/0f/79/fe0f79f3a048fb495d92bb53d4cc372a.jpg",
+        questions: [
+            {
+                text: "Хто зображений на фотографії?",
+                answers: ["Ведмідь", "Їжачок", "Лисичка", "Зайчик"],
+                correct: 1,
+                explain: "Правильно! Це їжачок."
+            },
+            {
+                text: "Що є на спині в їжачка?",
+                answers: ["Пір'я", "Луска", "Голочки", "Крила"],
+                correct: 2,
+                explain: "Так! Спинка їжачка вкрита голочками."
+            },
+            {
+                text: "Де може ховатися їжачок?",
+                answers: ["У морі", "Серед листя та під кущами", "На хмарі", "У вулику"],
+                correct: 1,
+                explain: "Правильно! Їжачок може ховатися серед листя та під кущами."
+            },
+            {
+                text: "Що їсть їжачок у природі?",
+                answers: ["Комах та дрібних тварин", "Лише цукерки", "Каміння", "Пластик"],
+                correct: 0,
+                explain: "Так! Їжачки їдять комах та інших дрібних тварин."
+            },
+            {
+                text: "Що робить їжачок, коли відчуває небезпеку?",
+                answers: ["Летить", "Розкриває крила", "Згортається в клубочок", "Пливе на дно"],
+                correct: 2,
+                explain: "Чудово! Їжачок може згорнутися в клубочок."
+            }
+        ]
+    }
+];
+
+
+
+const animalList = document.getElementById("animalList");
+const meadow = document.getElementById("meadow");
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const feedbackElement = document.getElementById("feedback");
+const progressBar = document.getElementById("progressBar");
+const questionNumber = document.getElementById("questionNumber");
+const animalCounter = document.getElementById("animalCounter");
+
+let selectedAnimal = null;
+let questionIndex = 0;
+let answered = false;
+
+
+
+function createAnimalCards() {
+    animalData.forEach(animal => {
+        const card = document.createElement("button");
+
+        card.className = "animal-card";
+        card.type = "button";
+        card.draggable = true;
+        card.dataset.id = animal.id;
+
+        card.innerHTML = `
+            <img src="${animal.image}"
+                 alt="${animal.name}"
+                 loading="lazy">
+            <strong>${animal.name}</strong>
+            <small>${animal.kind}</small>
+        `;
+
+        card.addEventListener("click", () => {
+            selectAnimal(animal.id);
+        });
+
+        card.addEventListener("dragstart", event => {
+            selectAnimal(animal.id);
+            event.dataTransfer.setData("animal-id", animal.id);
+        });
+
+        animalList.appendChild(card);
+    });
+}
+
+
+
+function selectAnimal(animalId) {
+    selectedAnimal = animalData.find(animal => animal.id === animalId);
+
+    if (!selectedAnimal) {
+        return;
+    }
+
+    questionIndex = 0;
+    answered = false;
+
+    document.querySelectorAll(".animal-card").forEach(card => {
+        card.classList.toggle(
+            "selected",
+            card.dataset.id === animalId
+        );
+    });
+
+    document.querySelectorAll(".placed-animal").forEach(item => {
+        item.classList.toggle(
+            "active",
+            item.dataset.id === animalId
+        );
+    });
+
+    renderQuestion();
+}
+
+
+
+function renderQuestion() {
+    if (!selectedAnimal) {
+        questionElement.textContent = "Спочатку обери тваринку!";
+
+        answersElement.innerHTML = "";
+        feedbackElement.textContent = "Тут з'явиться результат відповіді.";
+        feedbackElement.className = "";
+
+        questionNumber.textContent = "Питання 0 із 5";
+        progressBar.style.width = "0%";
+
+        return;
+    }
+
+    const currentQuestion =
+        selectedAnimal.questions[questionIndex];
+
+    questionElement.textContent = currentQuestion.text;
+    answersElement.innerHTML = "";
+
+    feedbackElement.textContent = "Обери одну відповідь.";
+    feedbackElement.className = "";
+
+    answered = false;
+
+    currentQuestion.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.type = "button";
+        button.textContent = answer;
+
+        button.addEventListener("click", () => {
+            checkAnswer(index, button);
+        });
+
+        answersElement.appendChild(button);
+    });
+
+    questionNumber.textContent =
+        "Питання " + (questionIndex + 1) + " із " +
+        selectedAnimal.questions.length;
+
+    progressBar.style.width =
+        ((questionIndex + 1) / selectedAnimal.questions.length * 100) + "%";
+}
+
+
+
+function checkAnswer(answerIndex, clickedButton) {
+    if (answered || !selectedAnimal) {
+        return;
+    }
+
+    const currentQuestion =
+        selectedAnimal.questions[questionIndex];
+
+    const allAnswers =
+        answersElement.querySelectorAll(".answer");
+
+    answered = true;
+
+    allAnswers.forEach((button, index) => {
+        button.disabled = true;
+
+        if (index === currentQuestion.correct) {
+            button.classList.add("correct");
+        }
+    });
+
+    if (answerIndex === currentQuestion.correct) {
+        feedbackElement.textContent =
+            " Правильно! " + currentQuestion.explain;
+
+        feedbackElement.className = "good";
+    } else {
+        clickedButton.classList.add("wrong");
+
+        feedbackElement.textContent =
+            "Спробуй ще раз наступного разу! " +
+            currentQuestion.explain;
+
+        feedbackElement.className = "bad";
+    }
+}
+
+
+
+function nextQuestion() {
+    if (!selectedAnimal) {
+        questionElement.textContent = "Спочатку обери тваринку!";
+        return;
+    }
+
+    if (questionIndex < selectedAnimal.questions.length - 1) {
+        questionIndex++;
+        renderQuestion();
+    } else {
+        questionElement.textContent =
+            "🎉 Молодець! Усі питання про " +
+            selectedAnimal.name.toLowerCase() + " пройдено!";
+
+        answersElement.innerHTML = "";
+
+        feedbackElement.textContent =
+            "Обери іншу тваринку, щоб почати нову вікторину.";
+
+        feedbackElement.className = "good";
+        questionNumber.textContent = "Усі питання пройдено!";
+        progressBar.style.width = "100%";
+        answered = true;
+    }
+}
+
+
+
+function addAnimalToMeadow(animalId, clientX, clientY) {
+    const animal = animalData.find(item => item.id === animalId);
+
+    if (!animal) {
+        return;
+    }
+
+    const placed = document.createElement("div");
+
+    placed.className = "placed-animal";
+    placed.dataset.id = animal.id;
+
+    placed.innerHTML = `
+        <img src="${animal.image}" alt="${animal.name}">
+        <span class="placed-name">${animal.name}</span>
+        <button class="delete-button" type="button">
+            ✕ Видалити
+        </button>
+    `;
+
+    const rect = meadow.getBoundingClientRect();
+
+    let x = clientX - rect.left - 56;
+    let y = clientY - rect.top - 50;
+
+    x = Math.max(0, Math.min(x, rect.width - 112));
+    y = Math.max(45, Math.min(y, rect.height - 135));
+
+    placed.style.left = x + "px";
+    placed.style.top = y + "px";
+
+    meadow.appendChild(placed);
+
+    updateAnimalCounter();
+    makePlacedAnimalSelectable(placed);
+    makeAnimalMovable(placed);
+
+    selectAnimal(animal.id);
+}
+
+
+
+meadow.addEventListener("dragover", event => {
+    event.preventDefault();
+});
+
+meadow.addEventListener("drop", event => {
+    event.preventDefault();
+
+    const animalId = event.dataTransfer.getData("animal-id");
+
+    if (animalId) {
+        addAnimalToMeadow(animalId, event.clientX, event.clientY);
+    }
+});
+
+
+
+function makePlacedAnimalSelectable(placed) {
+    placed.addEventListener("click", event => {
+        if (event.target.closest(".delete-button")) {
+            return;
+        }
+
+        selectAnimal(placed.dataset.id);
+    });
+
+    placed.querySelector(".delete-button").addEventListener("click", event => {
+        event.stopPropagation();
+
+        const wasSelected =
+            selectedAnimal &&
+            selectedAnimal.id === placed.dataset.id;
+
+        placed.remove();
+        updateAnimalCounter();
+
+        if (wasSelected) {
+            document.querySelectorAll(".placed-animal").forEach(item => {
+                item.classList.remove("active");
+            });
+        }
+    });
+}
+
+
+function makeAnimalMovable(placed) {
+    let moving = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    placed.addEventListener("pointerdown", event => {
+        if (event.target.closest(".delete-button")) {
+            return;
+        }
+
+        moving = true;
+
+        const rect = placed.getBoundingClientRect();
+
+        offsetX = event.clientX - rect.left;
+        offsetY = event.clientY - rect.top;
+
+        placed.style.zIndex = "10";
+
+        try {
+            placed.setPointerCapture(event.pointerId);
+        } catch (error) {
+
+        }
+    });
+
+    placed.addEventListener("pointermove", event => {
+        if (!moving) {
+            return;
+        }
+
+        const rect = meadow.getBoundingClientRect();
+
+        let x = event.clientX - rect.left - offsetX;
+        let y = event.clientY - rect.top - offsetY;
+
+        x = Math.max(0, Math.min(x, rect.width - placed.offsetWidth));
+        y = Math.max(42, Math.min(y, rect.height - placed.offsetHeight));
+
+        placed.style.left = x + "px";
+        placed.style.top = y + "px";
+    });
+
+    placed.addEventListener("pointerup", () => {
+        moving = false;
+        placed.style.zIndex = "3";
+    });
+
+    placed.addEventListener("pointercancel", () => {
+        moving = false;
+        placed.style.zIndex = "3";
+    });
+}
+
+
+function updateAnimalCounter() {
+    const count =
+        meadow.querySelectorAll(".placed-animal").length;
+
+    animalCounter.textContent = "Тваринок: " + count;
+}
+
+
+
+document.getElementById("randomAnimal").addEventListener("click", () => {
+    const index = Math.floor(Math.random() * animalData.length);
+    const animal = animalData[index];
+
+    selectAnimal(animal.id);
+
+    const rect = meadow.getBoundingClientRect();
+
+    const x = rect.left + rect.width * (0.25 + Math.random() * 0.5);
+    const y = rect.top + rect.height * (0.45 + Math.random() * 0.3);
+
+    addAnimalToMeadow(animal.id, x, y);
+});
+
+
+
+document.getElementById("clearMeadow").addEventListener("click", () => {
+    document.querySelectorAll(".placed-animal").forEach(animal => {
+        animal.remove();
+    });
+
+    selectedAnimal = null;
+    questionIndex = 0;
+    answered = false;
+
+    document.querySelectorAll(".animal-card").forEach(card => {
+        card.classList.remove("selected");
+    });
+
+    updateAnimalCounter();
+    renderQuestion();
+});
+
+
+
+document.getElementById("nextQuestion").addEventListener("click", () => {
+    nextQuestion();
+});
+
+
+
+createAnimalCards();
+updateAnimalCounter();
+renderQuestion();
+
+</script>
+
+</body>
+</html>
